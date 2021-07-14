@@ -34,7 +34,17 @@ def platform():
 
 # Extract All categories from websites
 def get_all_categories(base_url):
-    webpage = requests.get(base_url, headers=headers)
+
+    maxtry = 3
+    while maxtry:
+        try:
+            webpage = requests.get(base_url, headers=headers)
+            break
+        except:
+            time.sleep(5)
+            maxtry = maxtry - 1
+            continue
+
     soup = BeautifulSoup(webpage.content, "html.parser")
 
     # print(soup.prettify())
@@ -74,7 +84,15 @@ def get_all_products(browser, requested_categories):
         # I used Firefox; you can use whichever browser you like.
 
         # Tell Selenium to get the URL you're interested in.
-        browser.get(each_link)
+        maxtry = 3
+        while maxtry:
+            try:
+                browser.get(each_link)
+                break
+            except:
+                time.sleep(5)
+                maxtry = maxtry - 1
+                continue
 
         # Selenium script to scroll to the bottom, wait 3 seconds for the next batch of data to load, then continue scrolling.  It will continue to do this until the page stops loading new data.
         lenOfPage = browser.execute_script(
